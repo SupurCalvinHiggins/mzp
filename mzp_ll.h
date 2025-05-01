@@ -18,8 +18,11 @@ void mzp_ll_init(mzp_ll *ll, mzp_mem_allocator *allocator);
 
 u32 mzp_ll_len(mzp_ll *ll);
 
-void mzp_ll_push_front(mzp_ll *ll, void *data);
-void *mzp_ll_pop_front(mzp_ll *ll);
+void *mzp_ll_peek_front(mzp_ll *ll);
+void *mzp_ll_peek_back(mzp_ll *ll);
 
+void mzp_ll_push_front(mzp_ll *ll, void *data);
 void mzp_ll_push_back(mzp_ll *ll, void *data);
+
+void *mzp_ll_pop_front(mzp_ll *ll);
 void *mzp_ll_pop_back(mzp_ll *ll);

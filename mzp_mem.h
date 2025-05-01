@@ -1,3 +1,5 @@
+#pragma once
+
 #include "mzp_int.h"
 
 typedef struct {
@@ -21,5 +23,6 @@ typedef struct {
       .free_stack_len = MZP_MEM_ALLOCATOR_UNINIT,                              \
   };
 
+void mzp_mem_init(mzp_mem_allocator *allocator);
 void *mzp_mem_alloc(mzp_mem_allocator *allocator);
 void mzp_mem_dealloc(mzp_mem_allocator *allocator, void *block);

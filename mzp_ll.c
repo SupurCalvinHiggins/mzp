@@ -1,4 +1,5 @@
 #include "mzp_ll.h"
+#include "mzp_assert.h"
 
 mzp_ll mzp_ll_new(mzp_mem_allocator *allocator) {
   mzp_ll ll;
@@ -9,9 +10,24 @@ mzp_ll mzp_ll_new(mzp_mem_allocator *allocator) {
 void mzp_ll_init(mzp_ll *ll, mzp_mem_allocator *allocator) {
   ll->head = NULL;
   ll->allocator = allocator;
+  ll->len = 0;
 }
 
 u32 mzp_ll_len(mzp_ll *ll) { return ll->len; }
+
+void *mzp_ll_peek_front(mzp_ll *ll) {
+  mzp_assert(mzp_ll_len(ll) != 0);
+  return ll->head->data;
+}
+
+void *mzp_ll_peek_back(mzp_ll *ll) {
+  mzp_assert(mzp_ll_len(ll) != 0);
+  mzp_ll_node *curr = ll->head;
+  while (curr->next) {
+    curr = curr->next;
+  }
+  return curr->data;
+}
 
 void mzp_ll_push_front(mzp_ll *ll, void *data) {
   mzp_ll_node *node = mzp_mem_alloc(ll->allocator);
@@ -62,5 +78,6 @@ void *mzp_ll_pop_back(mzp_ll *ll) {
   void *data = node->data;
   curr->next = curr->next->next;
   mzp_mem_dealloc(ll->allocator, node);
+  --(ll->len);
   return data;
 }

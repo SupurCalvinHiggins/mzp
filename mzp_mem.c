@@ -40,7 +40,8 @@ void *mzp_mem_alloc(mzp_mem_allocator *allocator) {
   }
   mzp_mem_allocator_assert_ok(allocator);
   mzp_assert(allocator->free_stack_len != 0);
-  u32 free = allocator->free_stack[allocator->free_stack_len--];
+  --(allocator->free_stack_len);
+  u32 free = allocator->free_stack[allocator->free_stack_len];
   mzp_mem_free_assert_ok(allocator, free);
   void *data = allocator->blocks + (free * allocator->block_size);
   mzp_mem_data_assert_ok(allocator, data);
@@ -52,6 +53,7 @@ void mzp_mem_dealloc(mzp_mem_allocator *allocator, void *data) {
   mzp_mem_data_assert_ok(allocator, data);
   u32 free = (data - allocator->blocks) / allocator->block_size;
   mzp_mem_free_assert_ok(allocator, free);
-  allocator->free_stack[++(allocator->free_stack_len)] = free;
+  allocator->free_stack[allocator->free_stack_len] = free;
+  ++(allocator->free_stack_len);
   mzp_mem_allocator_assert_ok(allocator);
 }
